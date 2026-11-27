@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.medicine-form-card {
+  max-width: 1000px;
+}
+
+.medicine-image-preview {
+  display: block;
+  max-width: 220px;
+  max-height: 180px;
+  border-radius: 0.5rem;
+  object-fit: contain;
+  background: #f1f3f5;
+}

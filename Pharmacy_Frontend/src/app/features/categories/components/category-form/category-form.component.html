@@ -1,0 +1,101 @@
+<div class="container-fluid px-0">
+  <div class="mb-4">
+    <h1 class="h3 mb-1">{{ editMode() ? 'Edit Category' : 'Add Category' }}</h1>
+    <p class="text-secondary mb-0">
+      {{ editMode() ? 'Update category details and status.' : 'Create a category for pharmacy medicines.' }}
+    </p>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert-danger" role="alert">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="text-center py-5" aria-live="polite">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading category...</span>
+      </div>
+      <p class="text-secondary mt-3 mb-0">Loading category...</p>
+    </div>
+  } @else {
+    <div class="card border-0 shadow-sm category-form-card">
+      <div class="card-body p-4 p-md-5">
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="mb-4">
+            <label for="category-name" class="form-label">Name</label>
+            <input
+              id="category-name"
+              type="text"
+              class="form-control"
+              formControlName="name"
+              maxlength="100"
+              autocomplete="off"
+              [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid"
+              [attr.aria-describedby]="form.controls.name.touched && form.controls.name.invalid ? 'name-errors' : null"
+            >
+            @if (form.controls.name.touched && form.controls.name.invalid) {
+              <div id="name-errors" class="invalid-feedback">
+                @if (form.controls.name.hasError('required') || form.controls.name.hasError('whitespace')) {
+                  <div>Name is required.</div>
+                }
+                @if (form.controls.name.hasError('minlength')) {
+                  <div>Name must be at least 2 characters.</div>
+                }
+                @if (form.controls.name.hasError('maxlength')) {
+                  <div>Name cannot exceed 100 characters.</div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label for="category-description" class="form-label">Description</label>
+            <textarea
+              id="category-description"
+              class="form-control"
+              formControlName="description"
+              rows="4"
+              maxlength="500"
+              [class.is-invalid]="form.controls.description.touched && form.controls.description.invalid"
+            ></textarea>
+            @if (form.controls.description.touched && form.controls.description.hasError('maxlength')) {
+              <div class="invalid-feedback d-block">
+                Description cannot exceed 500 characters.
+              </div>
+            }
+          </div>
+
+          @if (editMode()) {
+            <div class="form-check form-switch mb-4">
+              <input
+                id="category-active"
+                type="checkbox"
+                class="form-check-input"
+                role="switch"
+                formControlName="isActive"
+              >
+              <label class="form-check-label" for="category-active">Active</label>
+            </div>
+          }
+
+          <div class="d-flex flex-column-reverse flex-sm-row justify-content-end gap-2">
+            <a class="btn btn-outline-secondary" routerLink="/categories">Cancel</a>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="form.invalid || submitting() || !formReady()"
+            >
+              @if (submitting()) {
+                Saving...
+              } @else {
+                {{ editMode() ? 'Update Category' : 'Save Category' }}
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

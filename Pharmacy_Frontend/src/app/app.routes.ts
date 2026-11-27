@@ -14,6 +14,18 @@ export const routes: Routes = [
       import('./features/users/components/profile/profile.component').then(
         (component) => component.ProfileComponent,
       ),
+    path: 'categories',
+    loadChildren: () =>
+      import('./features/categories/categories.routes').then(
+        route => route.CATEGORY_ROUTES
+      )
+  },
+  {
+    path: 'medicines',
+    loadChildren: () =>
+      import('./features/medicines/medicines.routes').then(
+        route => route.MEDICINE_ROUTES
+      )
   },
   {
     path: '',
@@ -24,4 +36,10 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'auth/login',
   },
+    redirectTo: 'categories'
+  },
+  {
+    path: '**',
+    redirectTo: 'categories'
+  }
 ];

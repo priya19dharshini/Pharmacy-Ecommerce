@@ -1,1 +1,32 @@
 <router-outlet />
+<header class="app-header">
+  <nav class="navbar navbar-expand bg-white border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-semibold text-primary" routerLink="/categories">
+        Pharmacy Admin
+      </a>
+      <div class="navbar-nav">
+        <a
+          class="nav-link"
+          routerLink="/categories"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          Categories
+        </a>
+        <a
+          class="nav-link"
+          routerLink="/medicines"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          Medicines
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="container py-4 py-md-5">
+  <router-outlet />
+</main>
