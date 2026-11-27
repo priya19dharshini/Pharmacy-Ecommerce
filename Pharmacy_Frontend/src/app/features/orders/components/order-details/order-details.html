@@ -1,0 +1,48 @@
+<section class="page-shell" *ngIf="!loading">
+  <a routerLink="/orders" class="back-link">← Back to My Orders</a>
+
+  <div *ngIf="error" class="alert error" role="alert">{{ error }}</div>
+
+  <article *ngIf="order" class="details-card">
+    <header>
+      <div>
+        <p class="eyebrow">Order details</p>
+        <h1>Order #{{ order.id }}</h1>
+      </div>
+      <span class="status-badge" [attr.data-status]="order.status">{{ order.status }}</span>
+    </header>
+
+    <div class="metadata">
+      <div><span>Order date</span><strong>{{ order.orderDate | date:'medium' }}</strong></div>
+      <div><span>Payment method</span><strong>{{ order.paymentMethod }}</strong></div>
+      <div class="address"><span>Delivery address</span><strong>{{ order.deliveryAddress }}</strong></div>
+    </div>
+
+    <div *ngIf="order.prescriptionId || order.prescriptionStatus"
+      class="prescription">
+      <strong>Prescription</strong>
+      <span *ngIf="order.prescriptionId">ID: {{ order.prescriptionId }}</span>
+      <span *ngIf="order.prescriptionStatus">Status: {{ order.prescriptionStatus }}</span>
+    </div>
+
+    <h2>Medicines</h2>
+    <div class="item-table">
+      <div class="table-head">
+        <span>Medicine</span><span>Quantity</span><span>Unit price</span><span>Subtotal</span>
+      </div>
+      <div class="table-row" *ngFor="let item of order.items">
+        <strong>{{ item.medicineName }}</strong>
+        <span>{{ item.quantity }}</span>
+        <span>₹{{ item.unitPrice | number:'1.2-2' }}</span>
+        <strong>₹{{ item.subtotal | number:'1.2-2' }}</strong>
+      </div>
+    </div>
+
+    <div class="grand-total">
+      <span>Order total</span>
+      <strong>₹{{ order.totalAmount | number:'1.2-2' }}</strong>
+    </div>
+  </article>
+</section>
+
+<div *ngIf="loading" class="status">Loading order details...</div>

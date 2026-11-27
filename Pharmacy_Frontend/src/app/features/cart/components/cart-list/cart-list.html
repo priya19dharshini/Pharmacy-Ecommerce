@@ -1,0 +1,47 @@
+<section class="page-shell">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Your basket</p>
+      <h1>Shopping Cart</h1>
+    </div>
+    <button *ngIf="cart?.items?.length" type="button" class="clear-button"
+      (click)="clearCart()">
+      {{ confirmingClear ? 'Confirm clear cart' : 'Clear cart' }}
+    </button>
+  </header>
+
+  <div *ngIf="loading" class="status">Loading your cart...</div>
+  <div *ngIf="success" class="alert success" role="status">{{ success }}</div>
+  <div *ngIf="error" class="alert error" role="alert">{{ error }}</div>
+
+  <div *ngIf="!loading && cart?.items?.length" class="cart-layout">
+    <div class="cart-card">
+      <app-cart-item
+        *ngFor="let item of cart!.items"
+        [item]="item"
+        (quantityChange)="updateQuantity($event)"
+        (remove)="removeItem($event)">
+      </app-cart-item>
+    </div>
+
+    <aside class="summary-card">
+      <h2>Order Summary</h2>
+      <div class="summary-row">
+        <span>Total quantity</span>
+        <strong>{{ cart!.totalItems }}</strong>
+      </div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <strong>₹{{ cart!.totalAmount | number:'1.2-2' }}</strong>
+      </div>
+      <a routerLink="/checkout" class="checkout-button">Proceed to Checkout</a>
+    </aside>
+  </div>
+
+  <div *ngIf="!loading && !cart?.items?.length" class="empty-state">
+    <div class="empty-icon">Rx</div>
+    <h2>Your cart is empty</h2>
+    <p>Add medicines to continue with your order.</p>
+    <a routerLink="/medicines" class="primary-link">Browse Medicines</a>
+  </div>
+</section>
