@@ -88,13 +88,25 @@ if (app.Environment.IsDevelopment())
             .AllowAnyMethod();
     });
 });
+builder.Services.AddScoped<
+    IPrescriptionRepository,
+    PrescriptionRepository>();
 
+builder.Services.AddScoped<
+    IPrescriptionService,
+    PrescriptionService>();
+
+builder.Services.AddScoped<FileUploadHelper>();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// ------------------------------------
+// 13. MAP CONTROLLERS
+// ------------------------------------
 
 app.MapControllers();
 

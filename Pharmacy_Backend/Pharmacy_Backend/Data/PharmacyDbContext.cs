@@ -1,34 +1,69 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 ﻿
+using Pharmacy_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Pharmacy_Backend.Models;
 
-namespace Pharmacy_Backend.Data;
-
-public class PharmacyDbContext : DbContext
+namespace Pharmacy_Backend.Data
 {
-    public PharmacyDbContext(
-        DbContextOptions<PharmacyDbContext> options)
-        : base(options)
+    public class PharmacyDbContext : DbContext
     {
-    }
+        public PharmacyDbContext(
+            DbContextOptions<PharmacyDbContext> options)
+            : base(options)
+        {
+        }
 
-    public DbSet<Category> Categories { get; set; }
+        // User
+        public DbSet<ApplicationUser> Users { get; set; }
 
-    public DbSet<Medicine> Medicines { get; set; }
+        // Medicine
+        public DbSet<Medicine> Medicines { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
+        // Category
+        public DbSet<Category> Categories { get; set; }
 
-        modelBuilder.Entity<Medicine>()
-            .HasOne(m => m.Category)
-            .WithMany()
-            .HasForeignKey(m => m.CategoryId)
-            .OnDelete(DeleteBehavior.Restrict);
+        // Cart
+        public DbSet<Cart> Carts { get; set; }
 
-        modelBuilder.Entity<Medicine>()
-            .Property(m => m.Price)
-            .HasPrecision(18, 2);
+        public DbSet<CartItem> CartItems { get; set; }
+
+        // Orders
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
+
+        // Prescription - Member 4
+        public DbSet<Prescription> Prescriptions { get; set; }
+
+        protected override void OnModelCreating(
+            ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Prescription configuration
+            modelBuilder.Entity<Prescription>(entity =>
+            {
+                entity.HasKey(p => p.Id);
+
+                entity.Property(p => p.UserId)
+                    .IsRequired();
+
+                entity.Property(p => p.FileName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(p => p.FilePath)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(p => p.Status)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
+                entity.Property(p => p.RejectionReason)
+                    .HasMaxLength(500);
+            });
+        }
     }
 }
