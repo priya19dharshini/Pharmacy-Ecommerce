@@ -1,0 +1,231 @@
+:host {
+  display: block;
+}
+
+.auth-page {
+  min-height: 100vh;
+  padding: 2rem 0;
+  background:
+    radial-gradient(circle at 8% 10%, rgba(35, 155, 125, 0.1), transparent 28rem),
+    #f4f8f6;
+}
+
+.auth-container {
+  max-width: 1050px;
+}
+
+.auth-page .row {
+  min-height: 720px;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: #fff;
+  box-shadow: 0 1.5rem 4rem rgba(19, 65, 53, 0.12);
+}
+
+.auth-intro {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(145deg, #087d68, #075e57);
+}
+
+.auth-intro::after {
+  position: absolute;
+  right: -7rem;
+  bottom: 4rem;
+  width: 19rem;
+  height: 19rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+  content: "";
+  box-shadow: 0 0 0 2rem rgba(255, 255, 255, 0.04), 0 0 0 4rem rgba(255, 255, 255, 0.035);
+}
+
+.brand-mark {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.brand-cross {
+  display: inline-grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border-radius: 0.65rem;
+  color: #087d68;
+  background: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.intro-copy,
+.trust-note {
+  position: relative;
+  z-index: 1;
+}
+
+.intro-copy {
+  max-width: 22rem;
+  margin: 3rem 0;
+}
+
+.eyebrow {
+  color: #53b99d;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.auth-intro .eyebrow {
+  color: #a7e4d2;
+}
+
+.intro-copy h1 {
+  margin: 1rem 0;
+  font-size: clamp(2.2rem, 4vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.intro-copy p {
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.7;
+}
+
+.trust-note {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.9rem;
+}
+
+.trust-icon {
+  display: inline-grid;
+  width: 1.7rem;
+  height: 1.7rem;
+  place-items: center;
+  border-radius: 50%;
+  color: #075e57;
+  background: #a7e4d2;
+  font-weight: 700;
+}
+
+.auth-card {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 2.5rem clamp(1.5rem, 5vw, 3.5rem);
+}
+
+.form-heading {
+  margin-bottom: 1.5rem;
+}
+
+.form-heading h2 {
+  margin: 0.55rem 0;
+  color: #173c34;
+  font-size: clamp(1.65rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+.form-heading p,
+.form-footer {
+  color: #6b7d77;
+}
+
+.form-label {
+  color: #28443c;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.form-control {
+  min-height: 2.9rem;
+  border-color: #dce7e2;
+  border-radius: 0.65rem;
+}
+
+.form-control:focus {
+  border-color: #149779;
+  box-shadow: 0 0 0 0.2rem rgba(20, 151, 121, 0.14);
+}
+
+textarea.form-control {
+  min-height: auto;
+}
+
+.btn-pharmacy {
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0.65rem;
+  color: #fff;
+  background: #087d68;
+  font-weight: 700;
+}
+
+.btn-pharmacy:hover,
+.btn-pharmacy:focus-visible {
+  color: #fff;
+  background: #066a59;
+}
+
+.btn-pharmacy:disabled {
+  color: #fff;
+  background: #62a997;
+}
+
+.field-error {
+  margin-top: 0.35rem;
+  color: #b42318;
+  font-size: 0.82rem;
+}
+
+.form-footer {
+  margin: 1.4rem 0 0;
+  text-align: center;
+}
+
+.form-footer a {
+  color: #087d68;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+.mobile-brand {
+  margin-bottom: 1.5rem;
+  color: #087d68;
+}
+
+@media (max-width: 575.98px) {
+  .auth-page {
+    padding: 1rem 0;
+  }
+
+  .auth-page .row {
+    min-height: calc(100vh - 2rem);
+    border-radius: 1rem;
+  }
+
+  .auth-card {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+}

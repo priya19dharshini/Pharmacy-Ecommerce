@@ -1,0 +1,94 @@
+<main class="auth-page">
+  <div class="container auth-container">
+    <div class="row justify-content-center align-items-stretch">
+      <aside class="col-lg-5 d-none d-lg-flex">
+        <section class="auth-intro">
+          <a class="brand-mark" routerLink="/auth/login" aria-label="Carewell Pharmacy home">
+            <span class="brand-cross" aria-hidden="true">+</span>
+            <span>Carewell Pharmacy</span>
+          </a>
+          <div class="intro-copy">
+            <span class="eyebrow">YOUR HEALTH, OUR PRIORITY</span>
+            <h1>Care that keeps you moving.</h1>
+            <p>Sign in to manage your account and keep your pharmacy essentials close at hand.</p>
+          </div>
+          <div class="trust-note">
+            <span class="trust-icon" aria-hidden="true">✓</span>
+            <span>Private, secure account access</span>
+          </div>
+        </section>
+      </aside>
+
+      <section class="col-12 col-lg-7">
+        <div class="auth-card">
+          <a class="brand-mark mobile-brand d-lg-none" routerLink="/auth/login">
+            <span class="brand-cross" aria-hidden="true">+</span>
+            <span>Carewell Pharmacy</span>
+          </a>
+
+          <header class="form-heading">
+            <span class="eyebrow">WELCOME BACK</span>
+            <h2>Sign in to your account</h2>
+            <p>Enter your account details to continue.</p>
+          </header>
+
+          @if (errorMessage()) {
+            <div class="alert alert-danger" role="alert" aria-live="polite">
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="login-email">Email address</label>
+              <input
+                class="form-control"
+                id="login-email"
+                type="email"
+                formControlName="Email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                [attr.aria-invalid]="form.controls.Email.touched && form.controls.Email.invalid"
+              />
+              @if (form.controls.Email.touched && form.controls.Email.hasError('required')) {
+                <div class="field-error">Email is required.</div>
+              } @else if (form.controls.Email.touched && form.controls.Email.hasError('email')) {
+                <div class="field-error">Enter a valid email address.</div>
+              }
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label" for="login-password">Password</label>
+              <input
+                class="form-control"
+                id="login-password"
+                type="password"
+                formControlName="Password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                [attr.aria-invalid]="form.controls.Password.touched && form.controls.Password.invalid"
+              />
+              @if (form.controls.Password.touched && form.controls.Password.hasError('required')) {
+                <div class="field-error">Password is required.</div>
+              }
+            </div>
+
+            <button class="btn btn-pharmacy w-100" type="submit" [disabled]="loading()">
+              @if (loading()) {
+                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                Signing in...
+              } @else {
+                Sign in
+              }
+            </button>
+          </form>
+
+          <p class="form-footer">
+            New to Carewell?
+            <a routerLink="/auth/register">Create an account</a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
