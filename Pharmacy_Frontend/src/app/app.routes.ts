@@ -1,6 +1,7 @@
 
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 import { CheckoutComponent } from './features/orders/components/checkout/checkout';
 
 export const routes: Routes = [
@@ -16,7 +17,10 @@ export const routes: Routes = [
       import('./features/users/components/profile/profile.component').then(
         (component) => component.ProfileComponent,
       ),
+  },
+  {
     path: 'categories',
+    canActivate: [roleGuard(['Admin'])],
     loadChildren: () =>
       import('./features/categories/categories.routes').then(
         route => route.CATEGORY_ROUTES
@@ -24,6 +28,7 @@ export const routes: Routes = [
   },
   {
     path: 'medicines',
+    canActivate: [roleGuard(['Admin', 'Customer'])],
     loadChildren: () =>
       import('./features/medicines/medicines.routes').then(
         route => route.MEDICINE_ROUTES
@@ -57,10 +62,4 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'auth/login',
   },
-    redirectTo: 'categories'
-  },
-  {
-    path: '**',
-    redirectTo: 'categories'
-  }
 ];

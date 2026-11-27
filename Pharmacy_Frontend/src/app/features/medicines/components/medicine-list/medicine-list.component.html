@@ -4,7 +4,9 @@
       <h1 class="h3 mb-1">Medicine Management</h1>
       <p class="text-secondary mb-0">Manage medicines in your pharmacy inventory.</p>
     </div>
-    <a class="btn btn-primary" routerLink="/medicines/add">+ Add Medicine</a>
+    @if (isAdmin()) {
+      <a class="btn btn-primary" routerLink="/medicines/add">+ Add Medicine</a>
+    }
   </div>
 
   @if (successMessage()) {
@@ -35,15 +37,19 @@
       </div>
       <p class="text-secondary mt-3 mb-0">Loading medicines...</p>
     </div>
-  } @else if (medicines().length === 0 && !errorMessage()) {
+  } @else if (visibleMedicines().length === 0 && !errorMessage()) {
     <div class="card border-0 shadow-sm">
       <div class="card-body text-center py-5">
         <h2 class="h5">No medicines found</h2>
-        <p class="text-secondary mb-3">Add a medicine to get started.</p>
-        <a class="btn btn-primary" routerLink="/medicines/add">Add Medicine</a>
+        @if (isAdmin()) {
+          <p class="text-secondary mb-3">Add a medicine to get started.</p>
+          <a class="btn btn-primary" routerLink="/medicines/add">Add Medicine</a>
+        } @else {
+          <p class="text-secondary mb-0">There are no active medicines available right now.</p>
+        }
       </div>
     </div>
-  } @else if (medicines().length > 0) {
+  } @else if (visibleMedicines().length > 0) {
     <div class="card border-0 shadow-sm">
       <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
@@ -61,7 +67,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (medicine of medicines(); track medicine.id) {
+            @for (medicine of visibleMedicines(); track medicine.id) {
               <tr>
                 <td>
                   @if (medicine.imageUrl) {
@@ -103,24 +109,26 @@
                   >
                     View
                   </a>
-                  <a
-                    class="btn btn-outline-primary btn-sm me-1"
-                    [routerLink]="['/medicines/edit', medicine.id]"
-                  >
-                    Edit
-                  </a>
-                  <button
-                    type="button"
-                    class="btn btn-outline-danger btn-sm"
-                    [disabled]="deletingId() === medicine.id"
-                    (click)="deleteMedicine(medicine)"
-                  >
-                    @if (deletingId() === medicine.id) {
-                      Deleting...
-                    } @else {
-                      Delete
-                    }
-                  </button>
+                  @if (isAdmin()) {
+                    <a
+                      class="btn btn-outline-primary btn-sm me-1"
+                      [routerLink]="['/medicines/edit', medicine.id]"
+                    >
+                      Edit
+                    </a>
+                    <button
+                      type="button"
+                      class="btn btn-outline-danger btn-sm"
+                      [disabled]="deletingId() === medicine.id"
+                      (click)="deleteMedicine(medicine)"
+                    >
+                      @if (deletingId() === medicine.id) {
+                        Deleting...
+                      } @else {
+                        Delete
+                      }
+                    </button>
+                  }
                 </td>
               </tr>
             }

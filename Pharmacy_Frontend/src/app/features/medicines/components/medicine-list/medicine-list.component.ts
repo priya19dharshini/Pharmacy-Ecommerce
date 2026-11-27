@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
+import { TokenService } from '../../../../core/services/token.service';
 import { Medicine } from '../../models/medicine.model';
 import { MedicineService } from '../../services/medicine.service';
 
@@ -16,9 +17,19 @@ import { MedicineService } from '../../services/medicine.service';
 })
 export class MedicineListComponent implements OnInit {
   private readonly medicineService = inject(MedicineService);
+  private readonly tokenService = inject(TokenService);
   private readonly destroyRef = inject(DestroyRef);
 
   readonly medicines = signal<Medicine[]>([]);
+  readonly isAdmin = computed(
+    () => this.tokenService.getRole()?.toLowerCase() === 'admin'
+  );
+  readonly visibleMedicines = computed(() => {
+    const medicines = this.medicines();
+    return this.isAdmin()
+      ? medicines
+      : medicines.filter(medicine => medicine.isActive);
+  });
   readonly loading = signal(true);
   readonly deletingId = signal<number | null>(null);
   readonly errorMessage = signal('');

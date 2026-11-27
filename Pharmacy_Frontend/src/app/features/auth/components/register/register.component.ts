@@ -68,8 +68,11 @@ export class RegisterComponent {
       })
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
-        next: () => {
-          void this.router.navigate(['/profile']);
+        next: (response) => {
+          const destination = response.role.toLowerCase() === 'admin'
+            ? '/categories'
+            : '/medicines';
+          void this.router.navigateByUrl(destination);
         },
         error: (error: unknown) => {
           this.errorMessage.set(this.describeError(error));

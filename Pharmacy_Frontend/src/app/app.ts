@@ -1,13 +1,16 @@
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, effect, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   RouterLink,
   RouterLinkActive,
+  Router,
   RouterOutlet
 } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { CartService } from './features/cart/services/cart.service';
+import { TokenService } from './core/services/token.service';
 
 @Component({
   imports: [
@@ -22,26 +25,44 @@ import { CartService } from './features/cart/services/cart.service';
 })
 export class App implements OnInit {
   private readonly cartService = inject(CartService);
+  private readonly tokenService = inject(TokenService);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+
+  private readonly refreshCustomerCart = effect(() => {
+    if (this.tokenService.getRole()?.toLowerCase() === 'customer') {
+      this.cartService.refreshCount();
+    }
+  });
 
   cartCount = 0;
 
   ngOnInit(): void {
-    this.cartService.cart$.subscribe(cart => {
-      this.cartCount = cart?.totalItems ?? 0;
-    });
-
-    this.cartService.refreshCount();
+    this.cartService.cart$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(cart => {
+        this.cartCount = cart?.totalItems ?? 0;
+      });
   }
 
   get isAuthenticated(): boolean {
-    if (typeof localStorage === 'undefined') {
-      return false;
-    }
+    return this.tokenService.authenticated();
+  }
 
-    return !!(
-      localStorage.getItem('authToken') ??
-      localStorage.getItem('accessToken') ??
-      localStorage.getItem('token')
-    );
+  get isAdmin(): boolean {
+    return this.tokenService.getRole()?.toLowerCase() === 'admin';
+  }
+
+  get isCustomer(): boolean {
+    return this.tokenService.getRole()?.toLowerCase() === 'customer';
+  }
+
+  get isAuthPage(): boolean {
+    return this.router.url.startsWith('/auth/');
+  }
+
+  logout(): void {
+    this.tokenService.removeToken();
+    void this.router.navigate(['/auth/login']);
   }
 }

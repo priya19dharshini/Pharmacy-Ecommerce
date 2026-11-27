@@ -1,53 +1,57 @@
-<router-outlet />
-
-<header class="app-header">
-  <nav class="navbar navbar-expand bg-white border-bottom">
-    <div class="container">
-      <a class="navbar-brand fw-semibold text-primary" routerLink="/categories">
-        Pharmacy
-      </a>
-
-      <div class="navbar-nav">
+@if (!isAuthPage) {
+  <header class="app-header">
+    <nav class="navbar navbar-expand bg-white border-bottom">
+      <div class="container">
         <a
-          class="nav-link"
-          routerLink="/categories"
-          routerLinkActive="active"
-          ariaCurrentWhenActive="page"
+          class="navbar-brand fw-semibold text-primary"
+          [routerLink]="isAdmin ? '/categories' : '/medicines'"
         >
-          Categories
+          Pharmacy
         </a>
 
-        <a
-          class="nav-link"
-          routerLink="/medicines"
-          routerLinkActive="active"
-          ariaCurrentWhenActive="page"
-        >
-          Medicines
-        </a>
+        <div class="navbar-nav align-items-center gap-md-2">
+          @if (isAdmin) {
+            <a class="nav-link" routerLink="/categories" routerLinkActive="active">
+              Categories
+            </a>
+          }
 
-        <a
-          class="nav-link"
-          *ngIf="isAuthenticated"
-          routerLink="/orders"
-          routerLinkActive="active"
-        >
-          My Orders
-        </a>
+          @if (isAdmin || isCustomer) {
+            <a class="nav-link" routerLink="/medicines" routerLinkActive="active">
+              Medicines
+            </a>
+          }
 
-        <a
-          class="nav-link"
-          *ngIf="isAuthenticated"
-          routerLink="/cart"
-          routerLinkActive="active"
-        >
-          Cart ({{ cartCount }})
-        </a>
+          @if (isCustomer) {
+            <a class="nav-link" routerLink="/orders" routerLinkActive="active">
+              My Orders
+            </a>
+            <a class="nav-link" routerLink="/cart" routerLinkActive="active">
+              Cart ({{ cartCount }})
+            </a>
+          }
+
+          @if (isAuthenticated) {
+            <span class="navbar-text small text-secondary me-md-2">
+              {{ isAdmin ? 'Admin' : 'Customer' }}
+            </span>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="logout()">
+              Sign out
+            </button>
+          } @else {
+            <a class="nav-link" routerLink="/auth/login">Sign in</a>
+          }
+        </div>
       </div>
-    </div>
-  </nav>
-</header>
+    </nav>
+  </header>
+}
 
-<main class="container py-4 py-md-5">
+<main
+  [class.container]="!isAuthPage"
+  [class.py-4]="!isAuthPage"
+  [class.py-md-5]="!isAuthPage"
+  [class.auth-shell]="isAuthPage"
+>
   <router-outlet />
 </main>

@@ -37,12 +37,16 @@ export class LoginComponent {
       .login(this.form.getRawValue())
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
-        next: () => {
+        next: (response) => {
           const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-          const destination =
+          const safeReturnUrl =
             returnUrl?.startsWith('/') && !returnUrl.startsWith('//')
               ? returnUrl
-              : '/profile';
+              : null;
+          const destination = safeReturnUrl
+            ?? (response.role.toLowerCase() === 'admin'
+              ? '/categories'
+              : '/medicines');
 
           void this.router.navigateByUrl(destination);
         },
