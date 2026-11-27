@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-﻿
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Pharmacy_Backend.Models;
 using Microsoft.EntityFrameworkCore;
-using Pharmacy_Backend.Models;
 
 namespace Pharmacy_Backend.Data
 {
-    public class PharmacyDbContext : DbContext
+    public class PharmacyDbContext : IdentityDbContext<ApplicationUser>
     {
         public PharmacyDbContext(
             DbContextOptions<PharmacyDbContext> options)
@@ -14,26 +12,13 @@ namespace Pharmacy_Backend.Data
         {
         }
 
-        // User
-        public DbSet<ApplicationUser> Users { get; set; }
-
         // Medicine
         public DbSet<Medicine> Medicines { get; set; }
 
         // Category
         public DbSet<Category> Categories { get; set; }
 
-        // Cart
-        public DbSet<Cart> Carts { get; set; }
-
-        public DbSet<CartItem> CartItems { get; set; }
-
-        // Orders
-        public DbSet<Order> Orders { get; set; }
-
-        public DbSet<OrderItem> OrderItems { get; set; }
-
-        // Prescription - Member 4
+        // Prescription
         public DbSet<Prescription> Prescriptions { get; set; }
 
         protected override void OnModelCreating(
@@ -41,7 +26,16 @@ namespace Pharmacy_Backend.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Prescription configuration
+            modelBuilder.Entity<Medicine>()
+                .HasOne(m => m.Category)
+                .WithMany()
+                .HasForeignKey(m => m.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Medicine>()
+                .Property(m => m.Price)
+                .HasPrecision(18, 2);
+
             modelBuilder.Entity<Prescription>(entity =>
             {
                 entity.HasKey(p => p.Id);
