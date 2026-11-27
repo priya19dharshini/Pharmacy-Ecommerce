@@ -1,9 +1,11 @@
+
 <header class="app-header">
   <nav class="navbar navbar-expand bg-white border-bottom">
     <div class="container">
       <a class="navbar-brand fw-semibold text-primary" routerLink="/categories">
-        Pharmacy Admin
+        Pharmacy
       </a>
+
       <div class="navbar-nav">
         <a
           class="nav-link"
@@ -13,6 +15,7 @@
         >
           Categories
         </a>
+
         <a
           class="nav-link"
           routerLink="/medicines"
@@ -20,6 +23,24 @@
           ariaCurrentWhenActive="page"
         >
           Medicines
+        </a>
+
+        <a
+          class="nav-link"
+          *ngIf="isAuthenticated"
+          routerLink="/orders"
+          routerLinkActive="active"
+        >
+          My Orders
+        </a>
+
+        <a
+          class="nav-link"
+          *ngIf="isAuthenticated"
+          routerLink="/cart"
+          routerLinkActive="active"
+        >
+          Cart ({{ cartCount }})
         </a>
       </div>
     </div>

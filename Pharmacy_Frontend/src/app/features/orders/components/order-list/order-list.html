@@ -1,0 +1,51 @@
+<section class="page-shell">
+  <header>
+    <p class="eyebrow">Purchase history</p>
+    <h1>My Orders</h1>
+  </header>
+
+  <div *ngIf="loading" class="status">Loading your orders...</div>
+  <div *ngIf="success" class="alert success" role="status">{{ success }}</div>
+  <div *ngIf="error" class="alert error" role="alert">{{ error }}</div>
+
+  <div *ngIf="!loading && orders.length" class="order-list">
+    <article class="order-card" *ngFor="let order of orders">
+      <div class="order-main">
+        <div>
+          <p class="order-label">Order ID</p>
+          <strong>#{{ order.id }}</strong>
+        </div>
+        <div>
+          <p class="order-label">Order date</p>
+          <strong>{{ order.orderDate | date:'mediumDate' }}</strong>
+        </div>
+        <div>
+          <p class="order-label">Payment</p>
+          <strong>{{ order.paymentMethod }}</strong>
+        </div>
+        <div>
+          <p class="order-label">Total</p>
+          <strong>₹{{ order.totalAmount | number:'1.2-2' }}</strong>
+        </div>
+      </div>
+      <p class="address">{{ order.deliveryAddress }}</p>
+      <div class="order-actions">
+        <span class="status-badge" [attr.data-status]="order.status">{{ order.status }}</span>
+        <a [routerLink]="['/orders', order.id]" class="details-link">View Details</a>
+        <button *ngIf="canCancel(order)" type="button" class="cancel-button"
+          [disabled]="cancellingId === order.id"
+          (click)="requestCancel(order)">
+          {{ cancellingId === order.id
+            ? 'Cancelling...'
+            : (cancelConfirmation(order) ? 'Confirm cancellation' : 'Cancel Order') }}
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <div *ngIf="!loading && !orders.length" class="empty-state">
+    <h2>No orders yet</h2>
+    <p>Your completed and current orders will appear here.</p>
+    <a routerLink="/medicines" class="browse-link">Browse Medicines</a>
+  </div>
+</section>

@@ -1,0 +1,72 @@
+<section class="page-shell">
+  <header>
+    <p class="eyebrow">Final step</p>
+    <h1>Checkout</h1>
+  </header>
+
+  <div *ngIf="loading" class="status">Loading checkout...</div>
+  <div *ngIf="error" class="alert error" role="alert">{{ error }}</div>
+
+  <div *ngIf="!loading && cart?.items?.length" class="checkout-layout">
+    <section class="card">
+      <h2>Delivery details</h2>
+      <form [formGroup]="form" (ngSubmit)="placeOrder()" novalidate>
+        <label for="deliveryAddress">Delivery address</label>
+        <textarea id="deliveryAddress" rows="5"
+          formControlName="deliveryAddress"
+          placeholder="House number, street, area, city and postal code"></textarea>
+        <div class="field-error"
+          *ngIf="form.controls.deliveryAddress.touched && form.controls.deliveryAddress.invalid">
+          Enter a complete delivery address (10–500 characters).
+        </div>
+
+        <fieldset>
+          <legend>Payment method</legend>
+          <label class="payment-option">
+            <input type="radio" value="COD" formControlName="paymentMethod" />
+            <span>
+              <strong>Cash on Delivery</strong>
+              <small>Pay when your order arrives</small>
+            </span>
+          </label>
+        </fieldset>
+
+        <label for="prescriptionId">Prescription ID (if required)</label>
+        <input id="prescriptionId" type="number" min="1"
+          formControlName="prescriptionId"
+          placeholder="Enter an approved prescription ID" />
+        <p class="prescription-note">
+          Prescription-required medicines must have an approved prescription.
+          Upload and approve it in the
+          <a routerLink="/prescriptions">Prescription Management</a> page before checkout.
+          The backend performs final prescription validation.
+        </p>
+
+        <button type="submit" class="place-order"
+          [disabled]="submitting || form.invalid">
+          {{ submitting ? 'Placing order...' : 'Place Order' }}
+        </button>
+      </form>
+    </section>
+
+    <aside class="card summary">
+      <h2>Order Summary</h2>
+      <div class="order-item" *ngFor="let item of cart!.items">
+        <div>
+          <strong>{{ item.medicineName }}</strong>
+          <small>{{ item.quantity }} × ₹{{ item.unitPrice | number:'1.2-2' }}</small>
+        </div>
+        <strong>₹{{ item.subtotal | number:'1.2-2' }}</strong>
+      </div>
+      <div class="summary-total">
+        <span>Final total</span>
+        <strong>₹{{ cart!.totalAmount | number:'1.2-2' }}</strong>
+      </div>
+    </aside>
+  </div>
+
+  <div *ngIf="!loading && !cart?.items?.length" class="empty-state">
+    <h2>No items to checkout</h2>
+    <a routerLink="/cart" class="back-link">Return to Cart</a>
+  </div>
+</section>

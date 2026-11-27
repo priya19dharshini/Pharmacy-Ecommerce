@@ -1,0 +1,21 @@
+:host { display:block; min-height:calc(100vh - 140px); background:#f4f7f5; }
+.page-shell { max-width:1180px; margin:0 auto; padding:2.5rem 1.25rem 4rem; }
+header h1 { margin:.2rem 0 1.25rem; color:#153d2b; }
+.eyebrow { margin:0; color:#23844f; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
+.checkout-layout { display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:1.25rem; align-items:start; }
+.card { background:#fff; border-radius:16px; padding:1.35rem; box-shadow:0 8px 24px rgba(22,101,52,.08); }
+.card h2 { margin-top:0; }
+form { display:flex; flex-direction:column; gap:.55rem; }
+textarea, input { width:100%; box-sizing:border-box; border:1px solid #d7e5dc; border-radius:9px; padding:.8rem; font:inherit; }
+textarea:focus, input:focus { outline:2px solid #a7d5b7; border-color:#23844f; }
+fieldset { border:0; padding:.25rem 0; margin:.35rem 0; }
+.payment-option { display:flex; align-items:center; gap:.75rem; border:1px solid #bde0c8; border-radius:10px; padding:.8rem; }
+.payment-option span { display:flex; flex-direction:column; }.payment-option small { color:#64748b; margin-top:.2rem; }
+.field-error { color:#b91c1c; font-size:.875rem; }.prescription-note { color:#64748b; font-size:.9rem; }.prescription-note a { color:#23844f; }
+.place-order { border:0; border-radius:10px; background:#23844f; color:#fff; padding:.9rem; font-weight:700; cursor:pointer; }
+.place-order:disabled { background:#94a3b8; cursor:not-allowed; }
+.order-item { display:flex; justify-content:space-between; gap:1rem; border-bottom:1px solid #edf2ef; padding:.75rem 0; }.order-item div { display:flex; flex-direction:column; }.order-item small { color:#64748b;margin-top:.25rem; }
+.summary-total { display:flex; justify-content:space-between; padding-top:1rem; font-size:1.15rem; }
+.status { text-align:center;padding:3rem;color:#64748b; }.alert { padding:.8rem 1rem;border-radius:9px;margin:.75rem 0; }.error { background:#fee2e2;color:#991b1b; }
+.empty-state { text-align:center;padding:4rem 1rem; }.back-link { display:inline-block;margin-top:1rem;color:#fff;background:#23844f;padding:.8rem 1.2rem;border-radius:9px;text-decoration:none; }
+@media (max-width:850px) {.checkout-layout { grid-template-columns:1fr; }.summary { order:-1; }}
