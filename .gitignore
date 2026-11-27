@@ -1,0 +1,24 @@
+
+# Visual Studio temporary files
+.vs/
+**/.vs/
+
+# .NET generated files
+**/bin/
+**/obj/
+
+# Angular generated files
+**/node_modules/
+**/dist/
+**/.angular/
+
+# Environment files and secrets
+.env
+.env.*
+appsettings.Development.json
+
+# IDE and OS
+*.user
+*.suo
+.DS_Store
+Thumbs.db
