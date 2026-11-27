@@ -1,0 +1,31 @@
+:host {
+  display: block;
+}
+
+.table th,
+.table td {
+  padding: 0.85rem 0.75rem;
+  vertical-align: middle;
+}
+
+.medicine-thumbnail,
+.medicine-thumbnail-placeholder {
+  display: block;
+  width: 52px;
+  height: 52px;
+  border-radius: 0.375rem;
+}
+
+.medicine-thumbnail {
+  object-fit: cover;
+  background: #f1f3f5;
+}
+
+.medicine-thumbnail-placeholder {
+  display: grid;
+  place-items: center;
+  background: #f1f3f5;
+  color: #6c757d;
+  font-size: 0.65rem;
+  text-align: center;
+}

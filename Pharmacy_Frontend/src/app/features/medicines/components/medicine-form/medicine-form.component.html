@@ -1,0 +1,217 @@
+<div class="container-fluid px-0">
+  <div class="mb-4">
+    <h1 class="h3 mb-1">{{ editMode() ? 'Edit Medicine' : 'Add Medicine' }}</h1>
+    <p class="text-secondary mb-0">
+      {{ editMode() ? 'Update medicine details and inventory.' : 'Add a medicine to your pharmacy inventory.' }}
+    </p>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <div class="text-center py-5" aria-live="polite">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading medicine...</span>
+      </div>
+      <p class="text-secondary mt-3 mb-0">Loading medicine...</p>
+    </div>
+  } @else {
+    <div class="card border-0 shadow-sm medicine-form-card">
+      <div class="card-body p-4 p-md-5">
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="row g-4">
+            <div class="col-12 col-md-8">
+              <label for="medicine-name" class="form-label">Name</label>
+              <input
+                id="medicine-name"
+                type="text"
+                class="form-control"
+                formControlName="name"
+                maxlength="150"
+                autocomplete="off"
+                [class.is-invalid]="form.controls.name.touched && form.controls.name.invalid"
+              >
+              @if (form.controls.name.touched && form.controls.name.invalid) {
+                <div class="invalid-feedback">
+                  @if (form.controls.name.hasError('required') || form.controls.name.hasError('whitespace')) {
+                    <div>Name is required.</div>
+                  }
+                  @if (form.controls.name.hasError('minlength')) {
+                    <div>Name must be at least 2 characters.</div>
+                  }
+                  @if (form.controls.name.hasError('maxlength')) {
+                    <div>Name cannot exceed 150 characters.</div>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label for="medicine-category" class="form-label">Category</label>
+              <select
+                id="medicine-category"
+                class="form-select"
+                formControlName="categoryId"
+                [class.is-invalid]="form.controls.categoryId.touched && form.controls.categoryId.invalid"
+              >
+                <option [ngValue]="0">
+                  {{ categoriesLoading() ? 'Loading categories...' : 'Select a category' }}
+                </option>
+                @for (category of categories(); track category.id) {
+                  <option [ngValue]="category.id">
+                    {{ category.name }}{{ category.isActive ? '' : ' (Inactive)' }}
+                  </option>
+                }
+              </select>
+              @if (form.controls.categoryId.touched && form.controls.categoryId.invalid) {
+                <div class="invalid-feedback">Select a category.</div>
+              }
+            </div>
+
+            <div class="col-12">
+              <label for="medicine-description" class="form-label">Description</label>
+              <textarea
+                id="medicine-description"
+                class="form-control"
+                rows="3"
+                maxlength="1000"
+                formControlName="description"
+                [class.is-invalid]="form.controls.description.touched && form.controls.description.invalid"
+              ></textarea>
+              @if (form.controls.description.touched && form.controls.description.hasError('maxlength')) {
+                <div class="invalid-feedback d-block">Description cannot exceed 1000 characters.</div>
+              }
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+              <label for="medicine-price" class="form-label">Price</label>
+              <input
+                id="medicine-price"
+                type="number"
+                class="form-control"
+                min="0.01"
+                step="0.01"
+                formControlName="price"
+                [class.is-invalid]="form.controls.price.touched && form.controls.price.invalid"
+              >
+              @if (form.controls.price.touched && form.controls.price.invalid) {
+                <div class="invalid-feedback">Price must be at least 0.01.</div>
+              }
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+              <label for="medicine-stock" class="form-label">Stock Quantity</label>
+              <input
+                id="medicine-stock"
+                type="number"
+                class="form-control"
+                min="0"
+                step="1"
+                formControlName="stockQuantity"
+                [class.is-invalid]="form.controls.stockQuantity.touched && form.controls.stockQuantity.invalid"
+              >
+              @if (form.controls.stockQuantity.touched && form.controls.stockQuantity.invalid) {
+                <div class="invalid-feedback">Stock quantity must be 0 or greater.</div>
+              }
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+              <label for="medicine-manufacturer" class="form-label">Manufacturer</label>
+              <input
+                id="medicine-manufacturer"
+                type="text"
+                class="form-control"
+                maxlength="150"
+                formControlName="manufacturer"
+                [class.is-invalid]="form.controls.manufacturer.touched && form.controls.manufacturer.invalid"
+              >
+              @if (form.controls.manufacturer.touched && form.controls.manufacturer.invalid) {
+                <div class="invalid-feedback">
+                  @if (form.controls.manufacturer.hasError('required') || form.controls.manufacturer.hasError('whitespace')) {
+                    <div>Manufacturer is required.</div>
+                  }
+                  @if (form.controls.manufacturer.hasError('maxlength')) {
+                    <div>Manufacturer cannot exceed 150 characters.</div>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3">
+              <label for="medicine-image-url" class="form-label">Image URL</label>
+              <input
+                id="medicine-image-url"
+                type="url"
+                class="form-control"
+                maxlength="500"
+                formControlName="imageUrl"
+                [class.is-invalid]="form.controls.imageUrl.touched && form.controls.imageUrl.invalid"
+              >
+              @if (form.controls.imageUrl.touched && form.controls.imageUrl.invalid) {
+                <div class="invalid-feedback">
+                  @if (form.controls.imageUrl.hasError('url')) {
+                    <div>Enter a valid HTTP or HTTPS URL.</div>
+                  }
+                  @if (form.controls.imageUrl.hasError('maxlength')) {
+                    <div>Image URL cannot exceed 500 characters.</div>
+                  }
+                </div>
+              }
+            </div>
+
+            @if (form.controls.imageUrl.value.trim()) {
+              <div class="col-12">
+                <p class="form-label">Image preview</p>
+                <img
+                  class="medicine-image-preview"
+                  [src]="form.controls.imageUrl.value"
+                  alt="Medicine image preview"
+                >
+              </div>
+            }
+
+            <div class="col-12 d-flex flex-wrap gap-4">
+              <div class="form-check">
+                <input
+                  id="medicine-prescription"
+                  type="checkbox"
+                  class="form-check-input"
+                  formControlName="requiresPrescription"
+                >
+                <label class="form-check-label" for="medicine-prescription">
+                  Requires prescription
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  id="medicine-active"
+                  type="checkbox"
+                  class="form-check-input"
+                  formControlName="isActive"
+                >
+                <label class="form-check-label" for="medicine-active">Active</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-column-reverse flex-sm-row justify-content-end gap-2 mt-4">
+            <a class="btn btn-outline-secondary" routerLink="/medicines">Cancel</a>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="form.invalid || submitting() || !formReady()"
+            >
+              @if (submitting()) {
+                Saving...
+              } @else {
+                {{ editMode() ? 'Update Medicine' : 'Save Medicine' }}
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>
