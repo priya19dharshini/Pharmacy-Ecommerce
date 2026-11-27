@@ -54,7 +54,15 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+builder.Services.AddScoped<
+    IPrescriptionRepository,
+    PrescriptionRepository>();
 
+builder.Services.AddScoped<
+    IPrescriptionService,
+    PrescriptionService>();
+
+builder.Services.AddScoped<FileUploadHelper>();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -62,6 +70,10 @@ app.UseHttpsRedirection();
 app.UseCors("AngularPolicy");
 
 app.UseAuthorization();
+
+// ------------------------------------
+// 13. MAP CONTROLLERS
+// ------------------------------------
 
 app.MapControllers();
 
