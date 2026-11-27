@@ -1,13 +1,24 @@
+
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import {
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet
+} from '@angular/router';
+
 import { CartService } from './features/cart/services/cart.service';
 
 @Component({
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive
+  ],
   selector: 'app-root',
   styleUrl: './app.css',
-  templateUrl: './app.html',
+  templateUrl: './app.html'
 })
 export class App implements OnInit {
   private readonly cartService = inject(CartService);
@@ -18,13 +29,19 @@ export class App implements OnInit {
     this.cartService.cart$.subscribe(cart => {
       this.cartCount = cart?.totalItems ?? 0;
     });
+
     this.cartService.refreshCount();
   }
 
   get isAuthenticated(): boolean {
-    if (typeof localStorage === 'undefined') return false;
-    return !!(localStorage.getItem('authToken')
-      ?? localStorage.getItem('accessToken')
-      ?? localStorage.getItem('token'));
+    if (typeof localStorage === 'undefined') {
+      return false;
+    }
+
+    return !!(
+      localStorage.getItem('authToken') ??
+      localStorage.getItem('accessToken') ??
+      localStorage.getItem('token')
+    );
   }
 }

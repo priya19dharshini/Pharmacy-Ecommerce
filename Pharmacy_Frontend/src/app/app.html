@@ -1,18 +1,52 @@
-<header class="navbar">
-  <a routerLink="/" class="brand" aria-label="Pharmacy home">
-    <span class="brand-mark">Rx</span>
-    <span>Pharmacy</span>
-  </a>
 
-  <nav aria-label="Main navigation">
-    <a routerLink="/medicines" routerLinkActive="active">Medicines</a>
-    <a *ngIf="isAuthenticated" routerLink="/orders" routerLinkActive="active">My Orders</a>
-    <a *ngIf="isAuthenticated" routerLink="/cart" routerLinkActive="active" class="cart-link">
-      Cart <span class="cart-count">{{ cartCount }}</span>
-    </a>
+<header class="app-header">
+  <nav class="navbar navbar-expand bg-white border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-semibold text-primary" routerLink="/categories">
+        Pharmacy
+      </a>
+
+      <div class="navbar-nav">
+        <a
+          class="nav-link"
+          routerLink="/categories"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          Categories
+        </a>
+
+        <a
+          class="nav-link"
+          routerLink="/medicines"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
+          Medicines
+        </a>
+
+        <a
+          class="nav-link"
+          *ngIf="isAuthenticated"
+          routerLink="/orders"
+          routerLinkActive="active"
+        >
+          My Orders
+        </a>
+
+        <a
+          class="nav-link"
+          *ngIf="isAuthenticated"
+          routerLink="/cart"
+          routerLinkActive="active"
+        >
+          Cart ({{ cartCount }})
+        </a>
+      </div>
+    </div>
   </nav>
 </header>
 
-<main class="app-content">
+<main class="container py-4 py-md-5">
   <router-outlet />
 </main>
