@@ -1,0 +1,129 @@
+<main class="profile-page">
+  <header class="profile-nav">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a class="brand-mark" href="/" aria-label="Carewell Pharmacy home">
+        <span class="brand-cross" aria-hidden="true">+</span>
+        <span>Carewell Pharmacy</span>
+      </a>
+      <button class="btn btn-outline-success btn-sm logout-button" type="button" (click)="logout()">
+        Sign out
+      </button>
+    </div>
+  </header>
+
+  <section class="container profile-content">
+    <div class="profile-heading">
+      <div>
+        <span class="eyebrow">ACCOUNT</span>
+        <h1>Your profile</h1>
+        <p>Keep your contact details up to date.</p>
+      </div>
+      <div class="profile-avatar" aria-hidden="true">+</div>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger" role="alert" aria-live="polite">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    @if (successMessage()) {
+      <div class="alert alert-success" role="status" aria-live="polite">
+        {{ successMessage() }}
+      </div>
+    }
+
+    @if (loading()) {
+      <div class="profile-card loading-card" role="status" aria-live="polite">
+        <span class="spinner-border text-success" aria-hidden="true"></span>
+        <span>Loading your profile...</span>
+      </div>
+    } @else {
+      <section class="profile-card">
+        <div class="card-heading">
+          <div>
+            <h2>Personal information</h2>
+            <p>Only your name, phone number, and address can be edited.</p>
+          </div>
+          @if (profileId()) {
+            <span class="account-id">ID {{ profileId() }}</span>
+          }
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="saveProfile()" novalidate>
+          <div class="mb-4">
+            <label class="form-label" for="profile-full-name">Full name</label>
+            <input
+              class="form-control"
+              id="profile-full-name"
+              type="text"
+              formControlName="fullName"
+              autocomplete="name"
+            />
+            @if (form.controls.fullName.touched && form.controls.fullName.hasError('required')) {
+              <div class="field-error">Full name is required.</div>
+            } @else if (form.controls.fullName.touched && form.controls.fullName.hasError('minlength')) {
+              <div class="field-error">Enter at least 2 characters.</div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label" for="profile-email">Email address</label>
+            <input
+              class="form-control"
+              id="profile-email"
+              type="email"
+              formControlName="email"
+              autocomplete="email"
+              aria-describedby="email-note"
+            />
+            <div class="form-text" id="email-note">Email address is managed by your account.</div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label" for="profile-phone">Phone number</label>
+            <input
+              class="form-control"
+              id="profile-phone"
+              type="tel"
+              formControlName="phoneNumber"
+              autocomplete="tel"
+            />
+            @if (form.controls.phoneNumber.touched && form.controls.phoneNumber.hasError('required')) {
+              <div class="field-error">Phone number is required.</div>
+            } @else if (form.controls.phoneNumber.touched && form.controls.phoneNumber.hasError('pattern')) {
+              <div class="field-error">Enter a valid phone number.</div>
+            }
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label" for="profile-address">Address</label>
+            <textarea
+              class="form-control"
+              id="profile-address"
+              rows="3"
+              formControlName="address"
+              autocomplete="street-address"
+            ></textarea>
+            @if (form.controls.address.touched && form.controls.address.hasError('required')) {
+              <div class="field-error">Address is required.</div>
+            } @else if (form.controls.address.touched && form.controls.address.hasError('minlength')) {
+              <div class="field-error">Enter a complete address.</div>
+            }
+          </div>
+
+          <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+            <button class="btn btn-pharmacy" type="submit" [disabled]="saving()">
+              @if (saving()) {
+                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                Saving...
+              } @else {
+                Save changes
+              }
+            </button>
+          </div>
+        </form>
+      </section>
+    }
+  </section>
+</main>

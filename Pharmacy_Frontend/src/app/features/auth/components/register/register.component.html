@@ -1,0 +1,163 @@
+<main class="auth-page">
+  <div class="container auth-container">
+    <div class="row justify-content-center align-items-stretch">
+      <aside class="col-lg-5 d-none d-lg-flex">
+        <section class="auth-intro">
+          <a class="brand-mark" routerLink="/auth/login" aria-label="Carewell Pharmacy home">
+            <span class="brand-cross" aria-hidden="true">+</span>
+            <span>Carewell Pharmacy</span>
+          </a>
+          <div class="intro-copy">
+            <span class="eyebrow">A HEALTHIER WAY TO MANAGE CARE</span>
+            <h1>Your care, all in one place.</h1>
+            <p>Create an account to keep your profile details ready whenever you need us.</p>
+          </div>
+          <div class="trust-note">
+            <span class="trust-icon" aria-hidden="true">✓</span>
+            <span>Simple, secure pharmacy access</span>
+          </div>
+        </section>
+      </aside>
+
+      <section class="col-12 col-lg-7">
+        <div class="auth-card">
+          <a class="brand-mark mobile-brand d-lg-none" routerLink="/auth/login">
+            <span class="brand-cross" aria-hidden="true">+</span>
+            <span>Carewell Pharmacy</span>
+          </a>
+
+          <header class="form-heading">
+            <span class="eyebrow">JOIN CAREWELL</span>
+            <h2>Create your account</h2>
+            <p>Fill in your details to get started.</p>
+          </header>
+
+          @if (errorMessage()) {
+            <div class="alert alert-danger" role="alert" aria-live="polite">
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="register-name">Full name</label>
+              <input
+                class="form-control"
+                id="register-name"
+                type="text"
+                formControlName="FullName"
+                autocomplete="name"
+                placeholder="Your full name"
+              />
+              @if (form.controls.FullName.touched && form.controls.FullName.hasError('required')) {
+                <div class="field-error">Full name is required.</div>
+              } @else if (form.controls.FullName.touched && form.controls.FullName.hasError('minlength')) {
+                <div class="field-error">Enter at least 2 characters.</div>
+              }
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="register-email">Email address</label>
+              <input
+                class="form-control"
+                id="register-email"
+                type="email"
+                formControlName="Email"
+                autocomplete="email"
+                placeholder="you@example.com"
+              />
+              @if (form.controls.Email.touched && form.controls.Email.hasError('required')) {
+                <div class="field-error">Email is required.</div>
+              } @else if (form.controls.Email.touched && form.controls.Email.hasError('email')) {
+                <div class="field-error">Enter a valid email address.</div>
+              }
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label" for="register-password">Password</label>
+                <input
+                  class="form-control"
+                  id="register-password"
+                  type="password"
+                  formControlName="Password"
+                  autocomplete="new-password"
+                  placeholder="At least 8 characters"
+                />
+                @if (form.controls.Password.touched && form.controls.Password.hasError('required')) {
+                  <div class="field-error">Password is required.</div>
+                } @else if (form.controls.Password.touched && form.controls.Password.hasError('minlength')) {
+                  <div class="field-error">Use at least 8 characters.</div>
+                }
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label" for="register-confirm-password">Confirm password</label>
+                <input
+                  class="form-control"
+                  id="register-confirm-password"
+                  type="password"
+                  formControlName="ConfirmPassword"
+                  autocomplete="new-password"
+                  placeholder="Re-enter password"
+                />
+                @if (form.controls.ConfirmPassword.touched && form.controls.ConfirmPassword.hasError('required')) {
+                  <div class="field-error">Please confirm your password.</div>
+                } @else if (form.controls.ConfirmPassword.touched && form.hasError('passwordMismatch')) {
+                  <div class="field-error">Passwords do not match.</div>
+                }
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="register-phone">Phone number</label>
+              <input
+                class="form-control"
+                id="register-phone"
+                type="tel"
+                formControlName="PhoneNumber"
+                autocomplete="tel"
+                placeholder="Your phone number"
+              />
+              @if (form.controls.PhoneNumber.touched && form.controls.PhoneNumber.hasError('required')) {
+                <div class="field-error">Phone number is required.</div>
+              } @else if (form.controls.PhoneNumber.touched && form.controls.PhoneNumber.hasError('pattern')) {
+                <div class="field-error">Enter a valid phone number.</div>
+              }
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label" for="register-address">Address</label>
+              <textarea
+                class="form-control"
+                id="register-address"
+                rows="2"
+                formControlName="Address"
+                autocomplete="street-address"
+                placeholder="Street, city, and postal code"
+              ></textarea>
+              @if (form.controls.Address.touched && form.controls.Address.hasError('required')) {
+                <div class="field-error">Address is required.</div>
+              } @else if (form.controls.Address.touched && form.controls.Address.hasError('minlength')) {
+                <div class="field-error">Enter a complete address.</div>
+              }
+            </div>
+
+            <button class="btn btn-pharmacy w-100" type="submit" [disabled]="loading()">
+              @if (loading()) {
+                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                Creating account...
+              } @else {
+                Create account
+              }
+            </button>
+          </form>
+
+          <p class="form-footer">
+            Already have an account?
+            <a routerLink="/auth/login">Sign in</a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
